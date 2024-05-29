@@ -36,6 +36,10 @@ public class CentroDeCustoService implements ICRUDService<CentroDeCustoRequestDT
         if(optCentroDeCusto.isEmpty()){
             throw new ResourceNotFoundException("Não foi possível encontrar o Centro de Custo com o ID = " +id);
         }
+        Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(optCentroDeCusto.get().getId() != usuario.getId()){
+            throw new ResourceNotFoundException("O Centro de Custo com o Id: " + id + "não pertence a este usuario");
+        }
         return mapper.map(optCentroDeCusto.get(), CentroDeCustoResponseDTO.class);
     }
 
